@@ -1,0 +1,102 @@
+#include<iostream>
+
+using namespace std;
+
+struct	intnode {
+	int				value;
+	struct	intnode* next;
+};
+typedef	struct	intnode	IntNode;
+
+IntNode* intnode_construct(int	value, IntNode* next)
+{
+	IntNode* p = (IntNode*) malloc(sizeof(IntNode));
+	if (p != NULL) {
+		p->value = value;
+		p->next = next;
+	}
+	else
+		cout << "Error allocating memory" << endl;
+	return	p;
+}
+
+bool operator==(IntNode p1, IntNode* p2) { //Overloading the operator and passing it the two linked lists
+	IntNode* c2 = p2; //declaring a cursor for the linked list
+	IntNode* c1;
+	c1 = &p1; //creating a cursor pointing to the head of the linked list
+	int s1 = 0, s2 = 0; //declaring two sums to be used later for comparison
+	while (c1 != NULL) {
+		s1 += c1->value;
+		c1 = c1->next; //adding up the values of each node
+	}
+	while (c2 != NULL) {
+		s2 += c2->value;
+		c2 = c2->next;
+	}
+	if (s1 == s2) //comparison of both values
+		return true;
+	else return false;
+}
+
+bool operator<(IntNode x1, IntNode* x2) { //overloading
+
+	IntNode* cur2 = x2;
+	IntNode* cur1;
+	cur1 = &x1;
+	int counter1 = 0, counter2 = 0; //creating two counters to count the number of nodes
+	while (cur1 != NULL) {
+		counter1++;
+		cur1 = cur1->next;
+	}
+	while (cur2 != NULL) {
+		counter2++;
+		cur2 = cur2->next; //counting the nodes
+	}
+	if (counter1 < counter2) //comparison
+		return true;
+	else return false;
+}
+
+int main() {
+	IntNode* list1 = NULL, * list2 = NULL, * cur1 = list1, * cur2 = list2;
+	int n1, n2, v;
+	cout << "Enter the number of nodes in the first list" << endl; //creating two linked lists with user input
+	cin >> n1;
+	for (int i = 0; i < n1; i++) {
+		cout << "Enter the value of this node" << endl;
+		cin >> v;
+		if (list1 == NULL) {
+			list1 = intnode_construct(v, NULL);
+			cur1 = list1;
+		}
+		else {
+			cur1->next = intnode_construct(v, NULL);
+			cur1 = cur1->next;
+		}
+	}
+	cout << "Enter the number of nodes in the second list" << endl;
+	cin >> n2;
+	for (int i = 0; i < n2; i++) {
+		cout << "Enter the value of this node" << endl;
+		cin >> v;
+		if (list2 == NULL) {
+			list2 = intnode_construct(v, NULL);
+			cur2 = list2;
+		}
+		else {
+			cur2->next = intnode_construct(v, NULL);
+			cur2 = cur2->next;
+		}
+	}
+	if (*list1 == list2) //testing the overloaded operators
+		cout << "The two lists are equal in content" << endl;
+	else {
+		cout << "The two lists are not equal in content" << endl;
+	}
+	if (*list1 < list2)
+		cout << "List 2 has more nodes than list 1" << endl;
+	else
+		cout << "List 1 has more nodes than list 2" << endl;
+	system("pause");
+	return 0;
+}
