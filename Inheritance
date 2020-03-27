@@ -1,0 +1,96 @@
+//This was the last question in my Fund. of Computing 2 Final Exam and it was to implement inheritance in classes
+
+#include <iostream>
+
+using namespace std;
+
+class shape {
+private:
+	double area;
+public:
+	virtual double getArea() = 0;
+};
+
+class rectangle: public shape {
+private:
+	double length, width;
+public:
+	rectangle();
+	void setlw(double, double);
+	double getl();
+	double getw();
+	double getArea();
+};
+
+class circle : public shape {
+private:
+	double radius;
+public:
+	circle();
+	void setr(double);
+	double getr();
+	double getArea();
+};
+
+int main() {
+	rectangle x;
+	circle y;
+	double z, k, f;
+
+	cout << "Enter the length of the rectangle\n";
+	cin >> z;
+	cout << "Enter the width of the rectangle\n";
+	cin >> k;
+	x.setlw(z, k);
+	cout << "The area of the rectangle is " << x.getArea() << "\n";
+	cout << "Enter the radius of the circle\n";
+	cin >> f;
+	y.setr(f);
+	cout << "The area of the circle is " << y.getArea() << "\n";
+
+	system("pause");
+	return 0;
+}
+
+
+rectangle::rectangle() {
+	length = 0;
+	width = 0;
+}
+
+double rectangle::getArea() {
+	double a = 0;
+	a = length * width;
+	return a;
+}
+
+circle::circle() {
+	radius = 0;
+}
+
+double circle::getArea() {
+	double a = 0;
+	a = 22 / 7.0 * radius * radius;
+	return a;
+}
+
+void rectangle::setlw(double z, double k) {
+	length = z;
+	width = k;
+}
+
+void circle::setr(double f) {
+	radius = f;
+}
+
+double rectangle::getl() {
+	return length;
+}
+
+double rectangle::getw() {
+	return width;
+}
+
+double circle::getr() {
+	return radius;
+}
