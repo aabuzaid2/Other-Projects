@@ -1,0 +1,63 @@
+#include <iostream>
+#include<string.h>
+#include<malloc.h>
+#include<stdio.h>
+#include<cstring>
+
+using namespace std;
+
+class fancyString {			//class declaration
+private:
+	char* content;			//the string will be stored in content
+	bool bold, italic;		//flags representing bold and italic which will either be true or false for each
+public:
+	fancyString();		//default constructor
+	fancyString(const char*, bool, bool);		//constructor that takes a pointer to a char and true or false values for the flags
+	fancyString(const fancyString& a);			//copy constructor that takes another fancystring
+	~fancyString();			//destructor function
+	friend ostream& operator<<(ostream& os, const fancyString& str);		//friend overloaded operator
+};
+
+ostream& operator<<(ostream& os, const fancyString& str) {		//operator now can print a fancyString to the screen
+	printf("%s\n", str.content);
+	if (str.bold == true) cout << "The string is bold\n";
+	else cout << "The string is not bold\n";
+	if (str.italic == true) cout << "The string is italic\n";
+	else cout << "The string is not italic\n";
+	return os;
+}
+
+
+
+int main() {
+	fancyString fs1("First Example", true, true);		//calling constructors
+	fancyString fs2(fs1);
+	cout << fs1 << fs2;		//using overloaded operator to print the two fancy strings to the screen
+	system("pause");
+	return 0;
+}
+
+fancyString::fancyString() {		//default constructor sets all values to the default values
+	content = (char*)" ";
+	bold = false;
+	italic = false;
+}
+
+fancyString::fancyString(const char * a, bool b, bool c) {		//constructor copies the string into itself and sets flags
+	content = (char*)calloc(strlen(a) + 1, sizeof(char));
+	strcpy(content, a);
+	bold = b;
+	italic = c;
+}
+
+fancyString::fancyString(const fancyString& a) {			//constructor copies the fancyString that was passed to it
+	content = (char*)calloc(strlen(a.content) + 1, sizeof(char));
+	strcpy(content, a.content);
+	bold = a.bold;
+	italic = a.italic;
+}
+
+fancyString::~fancyString() {		//destructor frees the allocated memory
+	cout << "Destructor\n";
+	free(content);
+}
