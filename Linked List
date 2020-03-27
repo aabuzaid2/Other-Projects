@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+struct	intnode {
+	int				value;
+	struct	intnode* next;
+};
+typedef	struct	intnode	IntNode;
+
+IntNode* intnode_construct(int	v, IntNode* next)
+{
+	IntNode* p = (IntNode*)malloc(sizeof(IntNode));
+	if (p != NULL) { //Successful allocation of memory
+		p->next = next;
+		p->value = v;
+		return	p;
+	}
+	else { //error message if memory fails to allocate
+		cout << "Error allocating memory" << endl;
+		exit(1);
+	}
+}
+
+int main()
+{
+	int num, k = 10;	//k is a constant that will be used to generate pattern for list
+	cout << "Enter the number of nodes required" << endl; //Variable number of nodes as required by user
+	cin >> num;
+	IntNode* head = NULL;
+	IntNode* cur = NULL; //initializing pointers
+	for (int c = 0; c < num; c++)
+	{
+		if (c == 0) {	//to differentiate if we need to start the linked list or add to the list
+			head = intnode_construct(k, NULL);	//creating first node pointed to by head
+			cur = head;	//pointing cursor to that same node so we can use it to create new nodes without moving head
+		}
+		else {
+			cur->next = intnode_construct((k * c + k), NULL);	//creating new node in list with pattern in value
+			cur = cur->next;	//moving cursor to the end of the list to allow for creation of new nodes
+		}
+	}
+	cur = head;		//bring cursor back to the beginning of the list to use to print
+	for (int o = 0; o < num; o++) {
+		cout << cur->value << endl;		//printing value in node
+		cur = cur->next;	//moving cursor to the next node
+	}
+	system("pause");
+	return 0;
+}
