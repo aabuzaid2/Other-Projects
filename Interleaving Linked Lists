@@ -1,0 +1,143 @@
+#include<iostream>
+#include<iomanip>
+
+using namespace std;
+
+struct	intnode {
+	int				value;
+	struct	intnode* next;
+};
+typedef	struct	intnode	IntNode;
+
+IntNode* intnode_construct(int, IntNode*);		//function prototypes
+IntNode* interleave(IntNode*, IntNode*);
+IntNode* copyList(IntNode*);
+
+int main() {
+	IntNode* list1 = NULL, * list2 = NULL, * reslist = NULL, * cur1 = list1, * cur2 = list2, * print = NULL;
+	int n1, n2, v;
+	cout << "Enter the number of nodes in the first list" << endl;		//creating two linked lists with user input
+	cin >> n1;
+	for (int i = 0; i < n1; i++) {
+		cout << "Enter the value of this node" << endl;
+		cin >> v;
+		if (list1 == NULL) {
+			list1 = intnode_construct(v, NULL);
+			cur1 = list1;
+		}
+		else {
+			cur1->next = intnode_construct(v, NULL);
+			cur1 = cur1->next;
+		}
+	}
+	cout << "Enter the number of nodes in the second list" << endl;
+	cin >> n2;
+	for (int i = 0; i < n2; i++) {
+		cout << "Enter the value of this node" << endl;
+		cin >> v;
+		if (list2 == NULL) {
+			list2 = intnode_construct(v, NULL);
+			cur2 = list2;
+		}
+		else {
+			cur2->next = intnode_construct(v, NULL);
+			cur2 = cur2->next;
+		}
+	}
+	reslist = interleave(list1, list2);		//calling interleave function
+	print = reslist;
+	while (print != NULL) {			//printing the result list
+		cout << print->value << setw(7);
+		print = print->next;
+	}
+	cout << endl;
+	system("pause");
+	return 0;
+}
+
+IntNode * intnode_construct(int	value, IntNode* next)
+{
+	IntNode* p = (IntNode*) malloc(sizeof(IntNode));
+	if (p != NULL) {
+		p->value = value;
+		p->next = next;
+	}
+	else
+		cout << "Error allocating memory" << endl;
+	return	p;
+}
+
+IntNode* interleave(IntNode* h1, IntNode* h2) {
+	IntNode* c1 = NULL, * c2 = NULL, * result, *curres;
+	c1 = h1;
+	c2 = h2;
+	result = NULL;
+	curres = result;		//creating new head pointer for new list and creating required cursors
+	if ((h1 == NULL) && (h2 == NULL))
+		cout << "Both lists are empty" << endl;
+	else {
+		if ((h1 == NULL) || (h2 == NULL))		//checking if one of the lists is empty
+			if (h1 == NULL)
+				result = copyList(h2);
+			else
+				result = copyList(h1);
+		else
+			while ((c1 != NULL) || (c2 != NULL)) {
+				if (c1 == NULL) {			//checking if one of the lists is shorter than the other within the loop
+					curres->next = copyList(c2);
+					c2 = NULL;			//if so remainder of the unfinished list is copied into result list
+				}
+				else {
+					if (c2 == NULL) {
+						curres->next = copyList(c1);
+						c1 = NULL;
+					}
+					else {
+						if (c1->value <= c2->value) {		//if both lists are unfinished then values are compared and lesser value is added into result list
+							if (result == NULL) {
+								result = intnode_construct(c1->value, NULL);			//creating the first node of the list
+								curres = result;
+								c1 = c1->next;
+							}
+							else {
+								curres->next = intnode_construct(c1->value, NULL);			//completing the list
+								curres = curres->next;
+								c1 = c1->next;
+							}
+						}
+						else {
+							if (result == NULL) {
+								result = intnode_construct(c2->value, NULL);		//creating the first node of the list
+								curres = result;
+								c2 = c2->next;
+							}
+							else {
+								curres->next = intnode_construct(c2->value, NULL);		//completing the list
+								curres = curres->next;
+								c2 = c2->next;
+							}
+						}
+					}
+				}
+			}
+	}
+	return result;
+}
+
+IntNode* copyList(IntNode* e) {		//a function which copies the conents of a list into a new list and return the head of the new list
+	IntNode* newL = NULL;
+	IntNode* cur = e;
+	IntNode* curn = NULL;
+
+	newL = intnode_construct(cur->value, NULL);
+	curn = newL;
+	cur = cur->next;		//creating first node
+
+	while (cur != NULL) {		//creating the remainder of the list
+		curn->next = intnode_construct(cur->value, NULL);
+		cur = cur->next;
+		curn = curn->next;
+	}
+	return newL;		//returning the head
+}
+
