@@ -1,0 +1,68 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+typedef struct {
+	int x, y;
+}point;
+
+float euclideanDistance(point, point);
+float averageDistance(point[] , point[] , int);
+float maximumDistance(point*, point*, int);
+
+int main()
+{
+	const int size = 3;		//size of the array
+	point a, b;
+	point c[size], d[size];
+	point* e, *f;
+	cout << "Enter a value for the first point (x)" << endl;
+	cin >> a.x;
+	cout << "Enter a value for the first point (y)" << endl;
+	cin >> a.y;
+	cout << "Enter a value for the second point (x)" << endl;
+	cin >> b.x;
+	cout << "Enter a value for the second point (y)" << endl;
+	cin >> b.y;
+	cout << "The distance between them is " << euclideanDistance(a, b) << endl;		//acquiring two points from user and finding the distance between them
+	for (int k = 0; k < size; k++)		//for loop to fill up the arrays with user input
+	{
+		cout << "Enter the x value for the first point" << endl;
+		cin >> c[k].x;
+		cout << "Enter the y value for the first point" << endl;
+		cin >> c[k].y;
+		cout << "Enter the x value for the second point" << endl;
+		cin >> d[k].x;
+		cout << "Enter the y value for the second point" << endl;
+		cin >> d[k].y;
+	}
+	cout << "The average distance is " << averageDistance(c, d, size) << endl;	//using function on arrays to calculate average distance
+	e = c;
+	f = d;		//pointers now point to the arrays instead of making new arrays
+	cout << "The maximum distance is " << maximumDistance(e, f, size) << endl;	//using function on pointers to calculate maximum distance
+}
+
+float euclideanDistance(point a, point b)
+{
+	float distance;
+	distance = sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));		//using formula to compute distance
+	return distance;
+}
+
+float averageDistance(point a[], point b[], int size)
+{
+	float sum = 0, avg;
+	for (int c = 0; c < size; c++)
+		sum = sum + euclideanDistance(a[c], b[c]);
+	avg = sum / size;		//computing average value
+	return avg;
+}
+
+float maximumDistance(point* d, point* e, int size)
+{
+	float max = 0;
+	for (int i = 0; i < size; i++, d++, e++)	//since data in an array is stored in a sequential manner in the memory, incrementing the pointers will allows us to extract data from the array
+		if (euclideanDistance(*d, *e) > max)	//comparing distances with a maximum value
+			max = euclideanDistance(*d, *e);
+	return max;
+}
