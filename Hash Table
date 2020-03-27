@@ -1,0 +1,69 @@
+//This was part of my final exam in my Fundamentals of Computing 2 Final Exam and it was my attempt to implement a hash table
+
+#include <iostream>
+
+using namespace std;
+
+class linkedl {
+private:
+
+public:
+	int value;
+	linkedl* next;
+	linkedl();
+	void append(int);
+	
+
+};
+
+int main() {
+	linkedl** hash;
+	int num = 0;
+	int k = 0;
+
+	hash = new linkedl* [20];
+	for (int i = 0; i < 20; i++) {
+		hash[i] = new linkedl;
+	}
+	while (num != -1) {
+		k = num % 20;
+		cout << "Enter the number you would like to hash. To exit enter -1\n";
+		cin >> num;
+		hash[k]->append(num);
+	}
+
+	linkedl* cur = NULL;
+	for (int c = 0; c < 20; c++) {
+		cur = hash[c];
+		while (cur->value != -1) {
+			cout << cur->value << "       ";
+			cur = cur->next;
+		}
+		cout << "\n";
+	}
+	system("pause");
+	return 0;
+}
+
+linkedl::linkedl() {
+	value = -1;
+	next = NULL;
+}
+
+void linkedl::append(int num) {
+	linkedl* cur;
+	cur = this;
+	if (num != -1) {
+		if (cur->value == -1) {		//first value
+			cur->value = num;
+			cur->next = new linkedl;
+		}
+		else {		//other values have been added
+			while (cur->value != -1) {
+				cur = cur->next;
+			}
+			cur->value = num;
+			cur->next = new linkedl;
+		}
+	}
+}
