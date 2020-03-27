@@ -1,0 +1,81 @@
+//This was also part of my Fundamentals of Computing 2 Final Exam where I implement a priority queue
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class priorityQueue {
+private:
+	char elem;
+	int prior;
+public:
+	priorityQueue();
+	void enqueue(char f, int k, int num, priorityQueue queue[]);
+	void dequeue(int, priorityQueue queue[]);
+	void printqueue(int, priorityQueue queue[]);
+};
+
+int main() {
+	priorityQueue Q;
+	priorityQueue queue[10];
+	int num, pr;
+	char a;
+
+	cout << "How many elem\n";
+	cin >> num;
+	for (int i = 0; i < num; i++) {
+		cout << "Enter the element\n";
+		cin >> a;
+		cout << "Enter the priority of this element [1-10]\n";
+		cin >> pr;
+		Q.enqueue(a, pr, num, queue);
+	}
+
+	for (int i = 0; i < num; i++) {
+		cout << "Before dequeue    ";
+		Q.printqueue(num, queue);
+		Q.dequeue(num, queue);
+		cout << "After dequeue    ";
+		Q.printqueue(num, queue);
+	}
+
+	system("pause");
+	return 0;
+}
+
+priorityQueue::priorityQueue() {
+	elem = ' ';
+	prior = 0;
+}
+
+void priorityQueue::enqueue(char f, int k, int num, priorityQueue queue[]) {
+	for (int i = 0; i < num; i++) {
+		if (queue[i].elem == ' ') {
+			queue[i].elem = f;
+			queue[i].prior = k;
+			break;
+		}
+	}
+}
+
+void priorityQueue::dequeue(int x, priorityQueue queue[]) {
+	int max;
+	int ind = 0;
+	for (int c = 0; c < x; c++) {
+		max = 0;
+		if (queue[c].prior > max) {
+			max = queue[c].prior;
+			ind = c;
+		}
+	}
+	queue[ind].elem = ' ';
+	queue[ind].prior = 0;
+}
+
+void priorityQueue::printqueue(int x, priorityQueue queue[]) {
+	for (int c = 0; c < x; c++) {
+		if (queue[c].elem != ' ')
+			cout << queue[c].elem << "      " << queue[c].prior << "\n";
+	}
+}
